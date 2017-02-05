@@ -1,0 +1,36 @@
+/*H**********************************************************************
+* FILENAME :        config.go
+*
+* PACKAGE :			config
+*
+* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
+*
+*H*/
+
+syntax = "proto3";
+package config;
+
+enum eJoypad {
+	
+    JoypadUp        = 0;
+    JoypadDown 	    = 1;
+    JoypadLeft 	    = 2;
+    JoypadRight 	= 3;
+	JoypadA 	    = 4;
+    JoypadB 	    = 5;
+    JoypadSelect 	= 6;
+    JoypadStart 	= 7;
+}
+
+message Settings {
+
+	map<int32, eJoypad> joypad_mapping = 1;
+
+    uint32 fps                         = 2;
+    uint32 scale                       = 3;
+
+    uint32 color_0                     = 4;
+    uint32 color_1                     = 5;
+    uint32 color_2                     = 6;
+    uint32 color_3  	               = 7;
+}
