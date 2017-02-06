@@ -9,30 +9,30 @@
 
 package cpu
 
-// SetNr sets bit N in the register
-func (c *Core) SetNr(n uint, dst *Register8) {
+// insSetNr sets bit N in the register
+func (c *Core) insSetNr(n uint, dst *Register8) {
 	bit := (byte(0x01) << n)
 	dst.set(dst.get() | bit)
 }
 
-// ResNr resets bit N in the register
-func (c *Core) ResNr(n uint, dst *Register8) {
+// insResNr resets bit N in the register
+func (c *Core) insResNr(n uint, dst *Register8) {
 	bit := ^(byte(0x01) << n)
 	dst.set(dst.get() & bit)
 }
 
-// BitNr tests bit N in the register
-func (c *Core) BitNr(n uint, dst *Register8) {
+// insBitNr tests bit N in the register
+func (c *Core) insBitNr(n uint, dst *Register8) {
 	c.setHalfCarryFlag(true)
 	c.setSubtractFlag(false)
 	bit := byte(0x01) << n
 	c.setZeroFlag(dst.get()&bit == 0)
 }
 
-// SrlR shifts the register right one bit position.
+// insSinsRlR shifts the register right one bit position.
 // the contents of bit 0 are copied to the carry flag
 // and a zero is put into bit 7.
-func (c *Core) SrlR(dst *Register8) {
+func (c *Core) insSinsRlR(dst *Register8) {
 	c.setHalfCarryFlag(false)
 	c.setSubtractFlag(false)
 	dst.rotateRight()
@@ -42,8 +42,8 @@ func (c *Core) SrlR(dst *Register8) {
 	c.setZeroFlag(dst.get() == 0)
 }
 
-// SwapR high 4 bits with the low 4 bits
-func (c *Core) SwapR(dst *Register8) {
+// insSwapR high 4 bits with the low 4 bits
+func (c *Core) insSwapR(dst *Register8) {
 	c.setHalfCarryFlag(false)
 	c.setSubtractFlag(false)
 	c.setCarryFlag(false)
@@ -52,10 +52,10 @@ func (c *Core) SwapR(dst *Register8) {
 	c.setZeroFlag(dst.get() == 0)
 }
 
-// SlaR shifts the register left one bit position.
+// insSlaR shifts the register left one bit position.
 // the contents of bit 7 are copied to the carry flag
 // and a zero is put into bit 0
-func (c *Core) SlaR(dst *Register8) {
+func (c *Core) insSlaR(dst *Register8) {
 
 	c.setHalfCarryFlag(false)
 	c.setSubtractFlag(false)
@@ -66,10 +66,10 @@ func (c *Core) SlaR(dst *Register8) {
 	c.setZeroFlag(dst.get() == 0)
 }
 
-// SraR shifts the register right one bit position.
+// insSraR shifts the register right one bit position.
 // the contents of bit 0 are copied to the carry flag
 // and the previous contents of bit 7 are unchanged.
-func (c *Core) SraR(dst *Register8) {
+func (c *Core) insSraR(dst *Register8) {
 
 	c.setHalfCarryFlag(false)
 	c.setSubtractFlag(false)
@@ -80,10 +80,10 @@ func (c *Core) SraR(dst *Register8) {
 	c.setZeroFlag(dst.get() == 0)
 }
 
-// RrR rotates the register right one bit position.
+// insRrR rotates the register right one bit position.
 // the contents of bit 0 are copied to the carry flag and
 // the previous contents of the carry flag are copied to bit 7
-func (c *Core) RrR(dst *Register8, cb bool) {
+func (c *Core) insRrR(dst *Register8, cb bool) {
 
 	c.setHalfCarryFlag(false)
 	c.setSubtractFlag(false)
@@ -100,10 +100,10 @@ func (c *Core) RrR(dst *Register8, cb bool) {
 	c.setZeroFlag(cb && dst.get() == 0)
 }
 
-// RlR rotates the register left one bit position.
+// insRlR rotates the register left one bit position.
 // the contents of bit 7 are copied to the carry flag and
 // the previous contents of the carry flag are copied to bit 0.
-func (c *Core) RlR(dst *Register8, cb bool) {
+func (c *Core) insRlR(dst *Register8, cb bool) {
 
 	c.setHalfCarryFlag(false)
 	c.setSubtractFlag(false)
@@ -120,9 +120,9 @@ func (c *Core) RlR(dst *Register8, cb bool) {
 	c.setZeroFlag(cb && dst.get() == 0)
 }
 
-// RrcR rotates the register right one bit position.
+// insRrcR rotates the register right one bit position.
 // the contents of bit 0 are copied to the carry flag and bit 7.
-func (c *Core) RrcR(dst *Register8, cb bool) {
+func (c *Core) insRrcR(dst *Register8, cb bool) {
 
 	c.setHalfCarryFlag(false)
 	c.setSubtractFlag(false)
@@ -131,9 +131,9 @@ func (c *Core) RrcR(dst *Register8, cb bool) {
 	c.setZeroFlag(cb && dst.get() == 0)
 }
 
-// RlcR rotates the register left one bit position.
+// insRlcR rotates the register left one bit position.
 // the contents of bit 7 are copied to the carry flag and bit 0.
-func (c *Core) RlcR(dst *Register8, cb bool) {
+func (c *Core) insRlcR(dst *Register8, cb bool) {
 
 	c.setHalfCarryFlag(false)
 	c.setSubtractFlag(false)
@@ -142,8 +142,8 @@ func (c *Core) RlcR(dst *Register8, cb bool) {
 	c.setZeroFlag(cb && dst.get() == 0)
 }
 
-// Rst jumps to the given address
-func (c *Core) Rst(addr uint16) error {
+// insRst jumps to the given address
+func (c *Core) insRst(addr uint16) error {
 
 	c.pc.increment()
 	c.sp.decrement()
@@ -163,9 +163,9 @@ func (c *Core) Rst(addr uint16) error {
 	return nil
 }
 
-// CallCondA16 calls the function at the immediate
+// insCallCondA16 calls the function at the immediate
 // 16bit address if the contidion is met
-func (c *Core) CallCondA16(cond bool) error {
+func (c *Core) insCallCondA16(cond bool) error {
 
 	im16, err := c.loadImmediate16()
 
@@ -194,9 +194,9 @@ func (c *Core) CallCondA16(cond bool) error {
 	return nil
 }
 
-// JpCondA16 jumps to the immediate
+// insJpCondA16 jumps to the immediate
 // 16bit address if the contidion is met
-func (c *Core) JpCondA16(cond bool) error {
+func (c *Core) insJpCondA16(cond bool) error {
 
 	im16, err := c.loadImmediate16()
 
@@ -211,9 +211,9 @@ func (c *Core) JpCondA16(cond bool) error {
 	return nil
 }
 
-// RetCond returns to the saved pc if the condition
+// insRetCond returns to the saved pc if the condition
 // is met
-func (c *Core) RetCond(cond bool) error {
+func (c *Core) insRetCond(cond bool) error {
 
 	if cond {
 
@@ -238,9 +238,9 @@ func (c *Core) RetCond(cond bool) error {
 	return nil
 }
 
-// JrCondR8 jumps to the immediate 8bit offset
+// insJrCondR8 jumps to the immediate 8bit offset
 // if the condition is met
-func (c *Core) JrCondR8(cond bool) error {
+func (c *Core) insJrCondR8(cond bool) error {
 
 	im8, err := c.loadImmediate8()
 
@@ -255,32 +255,32 @@ func (c *Core) JrCondR8(cond bool) error {
 	return nil
 }
 
-// DecR decrements the register by 1
-func (c *Core) DecR(dst *Register8) {
+// insDecR decrements the register by 1
+func (c *Core) insDecR(dst *Register8) {
 	c.setSubtractFlag(true)
 	c.setHalfCarryFlagSub8(dst.get(), 1)
 	dst.decrement()
 	c.setZeroFlag(dst.get() == 0)
 }
 
-// IncR increments the register by 1
-func (c *Core) IncR(dst *Register8) {
+// insIncR increments the register by 1
+func (c *Core) insIncR(dst *Register8) {
 	c.setSubtractFlag(false)
 	c.setHalfCarryFlagAdd8(dst.get(), 1)
 	dst.increment()
 	c.setZeroFlag(dst.get() == 0)
 }
 
-// CpN tests is register A == n
-func (c *Core) CpN(n byte) {
+// insCpN tests is register A == n
+func (c *Core) insCpN(n byte) {
 	c.setSubtractFlag(true)
 	c.setHalfCarryFlagSub8(c.a.get(), n)
 	c.setCarryFlagSub8(c.a.get(), n)
 	c.setZeroFlag(c.a.get()-n == 0)
 }
 
-// OrN sets A to A or n (bitwise)
-func (c *Core) OrN(n byte) {
+// insOrN sets A to A or n (bitwise)
+func (c *Core) insOrN(n byte) {
 	c.setSubtractFlag(false)
 	c.setHalfCarryFlag(false)
 	c.setCarryFlag(false)
@@ -288,8 +288,8 @@ func (c *Core) OrN(n byte) {
 	c.setZeroFlag(c.a.get() == 0)
 }
 
-// XorN sets A to A xor n (bitwise)
-func (c *Core) XorN(n byte) {
+// insXorN sets A to A xor n (bitwise)
+func (c *Core) insXorN(n byte) {
 	c.setSubtractFlag(false)
 	c.setHalfCarryFlag(false)
 	c.setCarryFlag(false)
@@ -297,8 +297,8 @@ func (c *Core) XorN(n byte) {
 	c.setZeroFlag(c.a.get() == 0)
 }
 
-// AndN sets A to A and n (bitwise)
-func (c *Core) AndN(n byte) {
+// insAndN sets A to A and n (bitwise)
+func (c *Core) insAndN(n byte) {
 	c.setSubtractFlag(false)
 	c.setHalfCarryFlag(true)
 	c.setCarryFlag(false)
@@ -306,8 +306,8 @@ func (c *Core) AndN(n byte) {
 	c.setZeroFlag(c.a.get() == 0)
 }
 
-// SbcAn subtracts n and the carry flag from A
-func (c *Core) SbcAn(n byte) {
+// insSbcAn subtracts n and the carry flag from A
+func (c *Core) insSbcAn(n byte) {
 	var cy byte
 
 	if c.carryFlag() {
@@ -321,8 +321,8 @@ func (c *Core) SbcAn(n byte) {
 	c.setZeroFlag(c.a.get() == 0)
 }
 
-// SubN subtracts n from A
-func (c *Core) SubN(n byte) {
+// insSubN subtracts n from A
+func (c *Core) insSubN(n byte) {
 	c.setSubtractFlag(true)
 	c.setHalfCarryFlagSub8(c.a.get(), n)
 	c.setCarryFlagSub8(c.a.get(), n)
@@ -330,8 +330,8 @@ func (c *Core) SubN(n byte) {
 	c.setZeroFlag(c.a.get() == 0)
 }
 
-// AdcAn adds n and the carry flag to A
-func (c *Core) AdcAn(n byte) {
+// insAdcAn adds n and the carry flag to A
+func (c *Core) insAdcAn(n byte) {
 
 	var cy byte
 
@@ -346,8 +346,8 @@ func (c *Core) AdcAn(n byte) {
 	c.setZeroFlag(c.a.get() == 0)
 }
 
-// AddAn adds n to A
-func (c *Core) AddAn(n byte) {
+// insAddAn adds n to A
+func (c *Core) insAddAn(n byte) {
 	c.setSubtractFlag(false)
 	c.setHalfCarryFlagAdd8(c.a.get(), n)
 	c.setCarryFlagAdd8(c.a.get(), n)
@@ -355,8 +355,8 @@ func (c *Core) AddAn(n byte) {
 	c.setZeroFlag(c.a.get() == 0)
 }
 
-// LdRm loads (addr) to the register
-func (c *Core) LdRm(dst *Register8, addr uint16) error {
+// insLdRm loads (addr) to the register
+func (c *Core) insLdRm(dst *Register8, addr uint16) error {
 
 	v, err := c.mmu.Read(addr)
 
@@ -369,8 +369,8 @@ func (c *Core) LdRm(dst *Register8, addr uint16) error {
 	return nil
 }
 
-// LdRd8 loads the immediate 8 bit value to the register
-func (c *Core) LdRd8(dst *Register8) error {
+// insLdRd8 loads the immediate 8 bit value to the register
+func (c *Core) insLdRd8(dst *Register8) error {
 
 	im8, err := c.loadImmediate8()
 
@@ -383,8 +383,8 @@ func (c *Core) LdRd8(dst *Register8) error {
 	return nil
 }
 
-// LdRrD16 loads the immediate 16 bit value to the register
-func (c *Core) LdRrD16(dst *Register16) error {
+// insLdRrD16 loads the immediate 16 bit value to the register
+func (c *Core) insLdRrD16(dst *Register16) error {
 
 	im16, err := c.loadImmediate16()
 
@@ -397,8 +397,8 @@ func (c *Core) LdRrD16(dst *Register16) error {
 	return nil
 }
 
-// PopRr pops a value from the stack into the register
-func (c *Core) PopRr(dst *Register16) error {
+// insPopRr pops a value from the stack into the register
+func (c *Core) insPopRr(dst *Register16) error {
 
 	if v, err := c.mmu.Read(c.sp.get()); err == nil {
 		dst.setLow(v)
@@ -419,8 +419,8 @@ func (c *Core) PopRr(dst *Register16) error {
 	return nil
 }
 
-// PushRr pushes the register to the stack
-func (c *Core) PushRr(src *Register16) error {
+// insPushRr pushes the register to the stack
+func (c *Core) insPushRr(src *Register16) error {
 
 	c.sp.decrement()
 
@@ -437,20 +437,20 @@ func (c *Core) PushRr(src *Register16) error {
 	return nil
 }
 
-// IncRr increments the register by 1
-func (c *Core) IncRr(dst *Register16) error {
+// insIncRr increments the register by 1
+func (c *Core) insIncRr(dst *Register16) error {
 	dst.increment()
 	return nil
 }
 
-// DecRr decrements the register by 1
-func (c *Core) DecRr(dst *Register16) error {
+// insDecRr decrements the register by 1
+func (c *Core) insDecRr(dst *Register16) error {
 	dst.decrement()
 	return nil
 }
 
-// AddHlRr adds the register to HL
-func (c *Core) AddHlRr(src *Register16) error {
+// insAddHlRr adds the register to HL
+func (c *Core) insAddHlRr(src *Register16) error {
 
 	hl := c.hl.get()
 	s := src.get()

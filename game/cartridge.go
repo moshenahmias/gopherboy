@@ -1,5 +1,5 @@
 /*H**********************************************************************
-* FILENAME :        stat.go
+* FILENAME :        cartridge.go
 *
 * PACKAGE :			game
 *
@@ -11,8 +11,9 @@ package game
 
 import (
 	"errors"
-	"github.com/moshenahmias/gopherboy/memory"
 	"io/ioutil"
+
+	"github.com/moshenahmias/gopherboy/memory"
 
 	"fmt"
 )
@@ -81,6 +82,10 @@ func NewCartridge(fileROM string) (*Cartridge, error) {
 	case 0x01, 0x02, 0x03: // MBC1
 
 		c.mbc = NewMBC1(romData, ramData)
+
+	case 0x05, 0x06: // MBC2
+
+		c.mbc = NewMBC2(romData)
 
 	default:
 

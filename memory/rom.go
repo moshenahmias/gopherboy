@@ -58,7 +58,5 @@ func (r *ROM) Read(addr uint16) (byte, error) {
 
 // Write 'data' to address 'addr'
 func (r *ROM) Write(addr uint16, data byte) error {
-
-	//return WriteAccessViolationError(addr)
 	return nil
 }

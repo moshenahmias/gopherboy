@@ -12,8 +12,6 @@ package cpu
 import (
 	"github.com/moshenahmias/gopherboy/memory"
 
-	"github.com/sirupsen/logrus"
-
 	"fmt"
 )
 
@@ -100,29 +98,10 @@ func (c *Core) Start(pc uint16) error {
 
 	for !c.quit {
 
-		pc := c.pc.get()
-
-		opcode, err := c.mmu.Read(pc)
+		opcode, err := c.mmu.Read(c.pc.get())
 
 		if err != nil {
 			return c.wrapError(err, "pc read failed")
-		}
-
-		if false {
-			logrus.Infof(
-				"op: %02x at %04x ([A: %02x] [BC: %04x] [DE: %04x] [HL: %04x] [SP: %04x] [PC: %04x] [ZNHC: %04b] [IME: %t] [IE: %02x] [IF: %02x])",
-				opcode,
-				pc,
-				c.a.get(),
-				c.bc.get(),
-				c.de.get(),
-				c.hl.get(),
-				c.sp.get(),
-				c.pc.get(),
-				c.f.get()>>4,
-				c.ime,
-				c.ier,
-				c.ifr)
 		}
 
 		ins := c.instructions[opcode]
@@ -139,13 +118,13 @@ func (c *Core) Start(pc uint16) error {
 
 		c.pc.increment()
 
-		for c.stop && !c.quit {
-			if _, err := c.mmu.Read(0xFF00); err != nil {
-				return c.wrapError(err, "joyp read (during stop) failed")
-			}
-		}
+		for do := true; do; do = (c.halt || c.stop) && !c.quit {
 
-		for do := true; do; do = c.halt && !c.quit {
+			if c.halt || c.stop {
+				if _, err := c.mmu.Read(0xFF00); err != nil {
+					return c.wrapError(err, "joyp read (during stop) failed")
+				}
+			}
 
 			for _, u := range c.timedUnits {
 				if err := u.ClockChanged(cycles); err != nil {
@@ -165,11 +144,6 @@ func (c *Core) Start(pc uint16) error {
 // Stop the execition loop
 func (c *Core) Stop() {
 	c.quit = true
-}
-
-// ReturnFromStop0 and continue execution
-func (c *Core) ReturnFromStop0() {
-	c.stop = false
 }
 
 // wrapErrorf is the formatted version of wrapError

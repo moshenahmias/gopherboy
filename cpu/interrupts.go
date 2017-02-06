@@ -55,66 +55,54 @@ func (c *Core) RequestInterrupt(flag byte) {
 // handleInterrupts handles the highest enabled and requested interrupt
 func (c *Core) handleInterrupts() error {
 
-	if !c.ime && !c.halt {
+	ifr := byte(c.ifr)
+
+	if ifr != 0 {
+
+		c.halt = false
+		c.stop = false
+	}
+
+	if !c.ime {
 		return nil
 	}
 
 	ier := byte(c.ier)
-	ifr := byte(c.ifr)
 	mask := ier & ifr
 
 	// vertical blank
 	if mask&VerticalBlankFlag != 0 {
 
-		if c.ime {
-			c.ifr = memory.MemReg(byte(c.ifr) & (^VerticalBlankFlag))
-			return c.jumpToISR(AddrVerticalBlank)
-		}
-
-		c.halt = false
+		c.ifr = memory.MemReg(byte(c.ifr) & (^VerticalBlankFlag))
+		return c.jumpToISR(AddrVerticalBlank)
 	}
 
 	// lcd status triggers
 	if mask&LCDStatusTriggersFlag != 0 {
 
-		if c.ime {
-			c.ifr = memory.MemReg(byte(c.ifr) & (^LCDStatusTriggersFlag))
-			return c.jumpToISR(AddrLCDStatusTriggers)
-		}
-		c.halt = false
+		c.ifr = memory.MemReg(byte(c.ifr) & (^LCDStatusTriggersFlag))
+		return c.jumpToISR(AddrLCDStatusTriggers)
 	}
 
 	// timer overflow
 	if mask&TimerOverflowFlag != 0 {
 
-		if c.ime {
-			c.ifr = memory.MemReg(byte(c.ifr) & (^TimerOverflowFlag))
-			return c.jumpToISR(AddrTimerOverflow)
-		}
-
-		c.halt = false
+		c.ifr = memory.MemReg(byte(c.ifr) & (^TimerOverflowFlag))
+		return c.jumpToISR(AddrTimerOverflow)
 	}
 
 	// serial link
 	if mask&SerialLinkFlag != 0 {
 
-		if c.ime {
-			c.ifr = memory.MemReg(byte(c.ifr) & (^SerialLinkFlag))
-			return c.jumpToISR(AddrSerialLink)
-		}
-
-		c.halt = false
+		c.ifr = memory.MemReg(byte(c.ifr) & (^SerialLinkFlag))
+		return c.jumpToISR(AddrSerialLink)
 	}
 
 	// joypad press
 	if mask&JoypadPressFlag != 0 {
 
-		if c.ime {
-			c.ifr = memory.MemReg(byte(c.ifr) & (^JoypadPressFlag))
-			return c.jumpToISR(AddrJoypadPress)
-		}
-
-		c.halt = false
+		c.ifr = memory.MemReg(byte(c.ifr) & (^JoypadPressFlag))
+		return c.jumpToISR(AddrJoypadPress)
 	}
 
 	return nil
@@ -124,7 +112,6 @@ func (c *Core) handleInterrupts() error {
 // jumps to the given ISR address
 func (c *Core) jumpToISR(addr uint16) error {
 
-	c.halt = false
 	c.ime = false
 
 	c.sp.decrement()

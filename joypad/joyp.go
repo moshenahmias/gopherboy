@@ -121,8 +121,6 @@ func (j *JOYP) setWireState() error {
 
 	if (prev^(j.data&0x0F))&prev != 0x00 {
 
-		j.core.ReturnFromStop0()
-
 		// request joypad press interrupt
 		j.core.RequestInterrupt(cpu.JoypadPressFlag)
 	}

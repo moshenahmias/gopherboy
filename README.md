@@ -1,15 +1,16 @@
 # gopherboy
 A Nintendo Game Boy emulator written in golang.
 
-1. Passes blargg's cpu tests 01 - 11.
-2. Currently supports only none-MBC and MBC1 roms.
+1. Passes blargg's cpu_instrs.gb test.
+2. Currently supports only none-MBC, MBC1 and MBC2 roms.
 3. Sound not implemented.
 
-### TODO list
+### TODO
 
-1. MBC2.
+1. MBC3.
 2. Save / Load game state.
-3. Sound.
+3. Serial Link.
+4. Sound.
 
 ### Dependencies
 
@@ -38,7 +39,7 @@ Usage of gopherboy:
         Path to settings file (default "settings.json")    
 ```
 
-### Default Keyboard Mapping
+### Default keyboard mapping
 
 | Operation     | Key           |
 | ------------- |:-------------:| 
@@ -57,7 +58,7 @@ Usage of gopherboy:
 
 You can change the following settings via the *settings.json* file:
 
-##### Joypad Mapping:
+##### Joypad mapping:
 
 ```
 "joypadMapping": {
@@ -69,7 +70,7 @@ Joypad keycodes: Up = 0, Down = 1, Left = 2, Right = 3, A = 4, B = 5, Select = 6
 
 SDL keycodes: https://wiki.libsdl.org/SDLKeycodeLookup
 
-##### Other Settings:
+##### Other settings:
 
 FPS rate, screen size and color palette.
 

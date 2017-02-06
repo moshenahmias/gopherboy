@@ -70,22 +70,22 @@ func (c *Core) initInstructions() {
 
 	// LD BC, d16
 	c.instructions[0x01] = func() (int, int, string, error) {
-		return 3, 12, "LD BC, d16", c.LdRrD16(&c.bc)
+		return 3, 12, "LD BC, d16", c.insLdRrD16(&c.bc)
 	}
 
 	// LD DE, d16
 	c.instructions[0x11] = func() (int, int, string, error) {
-		return 3, 12, "LD DE, d16", c.LdRrD16(&c.de)
+		return 3, 12, "LD DE, d16", c.insLdRrD16(&c.de)
 	}
 
 	// LD HL, d16
 	c.instructions[0x21] = func() (int, int, string, error) {
-		return 3, 12, "LD HL, d16", c.LdRrD16(&c.hl)
+		return 3, 12, "LD HL, d16", c.insLdRrD16(&c.hl)
 	}
 
 	// LD SP, d16
 	c.instructions[0x31] = func() (int, int, string, error) {
-		return 3, 12, "LD SP, d16", c.LdRrD16(&c.sp)
+		return 3, 12, "LD SP, d16", c.insLdRrD16(&c.sp)
 	}
 
 	// LD (a16), SP
@@ -130,17 +130,17 @@ func (c *Core) initInstructions() {
 
 	// POP BC
 	c.instructions[0xC1] = func() (int, int, string, error) {
-		return 1, 12, "POP BC", c.PopRr(&c.bc)
+		return 1, 12, "POP BC", c.insPopRr(&c.bc)
 	}
 
 	// POP DE
 	c.instructions[0xD1] = func() (int, int, string, error) {
-		return 1, 12, "POP DE", c.PopRr(&c.de)
+		return 1, 12, "POP DE", c.insPopRr(&c.de)
 	}
 
 	// POP HL
 	c.instructions[0xE1] = func() (int, int, string, error) {
-		return 1, 12, "POP HL", c.PopRr(&c.hl)
+		return 1, 12, "POP HL", c.insPopRr(&c.hl)
 	}
 
 	// POP AF
@@ -148,7 +148,7 @@ func (c *Core) initInstructions() {
 
 		f := c.f.get()
 
-		if err := c.PopRr(&c.af); err != nil {
+		if err := c.insPopRr(&c.af); err != nil {
 			return 1, 12, "POP AF", err
 		}
 
@@ -159,22 +159,22 @@ func (c *Core) initInstructions() {
 
 	// PUSH BC
 	c.instructions[0xC5] = func() (int, int, string, error) {
-		return 1, 16, "PUSH BC", c.PushRr(&c.bc)
+		return 1, 16, "PUSH BC", c.insPushRr(&c.bc)
 	}
 
 	// PUSH DE
 	c.instructions[0xD5] = func() (int, int, string, error) {
-		return 1, 16, "PUSH DE", c.PushRr(&c.de)
+		return 1, 16, "PUSH DE", c.insPushRr(&c.de)
 	}
 
 	// PUSH HL
 	c.instructions[0xE5] = func() (int, int, string, error) {
-		return 1, 16, "PUSH HL", c.PushRr(&c.hl)
+		return 1, 16, "PUSH HL", c.insPushRr(&c.hl)
 	}
 
 	// PUSH AF
 	c.instructions[0xF5] = func() (int, int, string, error) {
-		return 1, 16, "PUSH AF", c.PushRr(&c.af)
+		return 1, 16, "PUSH AF", c.insPushRr(&c.af)
 	}
 
 	/////////////////////////////////////////////
@@ -183,62 +183,62 @@ func (c *Core) initInstructions() {
 
 	// INC BC
 	c.instructions[0x03] = func() (int, int, string, error) {
-		return 1, 8, "INC BC", c.IncRr(&c.bc)
+		return 1, 8, "INC BC", c.insIncRr(&c.bc)
 	}
 
 	// INC DE
 	c.instructions[0x13] = func() (int, int, string, error) {
-		return 1, 8, "INC DE", c.IncRr(&c.de)
+		return 1, 8, "INC DE", c.insIncRr(&c.de)
 	}
 
 	// INC HL
 	c.instructions[0x23] = func() (int, int, string, error) {
-		return 1, 8, "INC HL", c.IncRr(&c.hl)
+		return 1, 8, "INC HL", c.insIncRr(&c.hl)
 	}
 
 	// INC SP
 	c.instructions[0x33] = func() (int, int, string, error) {
-		return 1, 8, "INC SP", c.IncRr(&c.sp)
+		return 1, 8, "INC SP", c.insIncRr(&c.sp)
 	}
 
 	// DEC BC
 	c.instructions[0x0B] = func() (int, int, string, error) {
-		return 1, 8, "DEC BC", c.DecRr(&c.bc)
+		return 1, 8, "DEC BC", c.insDecRr(&c.bc)
 	}
 
 	// DEC DE
 	c.instructions[0x1B] = func() (int, int, string, error) {
-		return 1, 8, "DEC DE", c.DecRr(&c.de)
+		return 1, 8, "DEC DE", c.insDecRr(&c.de)
 	}
 
 	// DEC HL
 	c.instructions[0x2B] = func() (int, int, string, error) {
-		return 1, 8, "DEC HL", c.DecRr(&c.hl)
+		return 1, 8, "DEC HL", c.insDecRr(&c.hl)
 	}
 
 	// DEC SP
 	c.instructions[0x3B] = func() (int, int, string, error) {
-		return 1, 8, "DEC SP", c.DecRr(&c.sp)
+		return 1, 8, "DEC SP", c.insDecRr(&c.sp)
 	}
 
 	// ADD HL, BC
 	c.instructions[0x09] = func() (int, int, string, error) {
-		return 1, 8, "ADD HL, BC", c.AddHlRr(&c.bc)
+		return 1, 8, "ADD HL, BC", c.insAddHlRr(&c.bc)
 	}
 
 	// ADD HL, DE
 	c.instructions[0x19] = func() (int, int, string, error) {
-		return 1, 8, "ADD HL, DE", c.AddHlRr(&c.de)
+		return 1, 8, "ADD HL, DE", c.insAddHlRr(&c.de)
 	}
 
 	// ADD HL, HL
 	c.instructions[0x29] = func() (int, int, string, error) {
-		return 1, 8, "ADD HL, HL", c.AddHlRr(&c.hl)
+		return 1, 8, "ADD HL, HL", c.insAddHlRr(&c.hl)
 	}
 
 	// ADD HL, SP
 	c.instructions[0x39] = func() (int, int, string, error) {
-		return 1, 8, "ADD HL, SP", c.AddHlRr(&c.sp)
+		return 1, 8, "ADD HL, SP", c.insAddHlRr(&c.sp)
 	}
 
 	// ADD SP, r8
@@ -299,37 +299,37 @@ func (c *Core) initInstructions() {
 
 	// LD B, d8
 	c.instructions[0x06] = func() (int, int, string, error) {
-		return 2, 8, "LD B, d8", c.LdRd8(c.b)
+		return 2, 8, "LD B, d8", c.insLdRd8(c.b)
 	}
 
 	// LD C, d8
 	c.instructions[0x0E] = func() (int, int, string, error) {
-		return 2, 8, "LD C, d8", c.LdRd8(c.c)
+		return 2, 8, "LD C, d8", c.insLdRd8(c.c)
 	}
 
 	// LD D, d8
 	c.instructions[0x16] = func() (int, int, string, error) {
-		return 2, 8, "LD D, d8", c.LdRd8(c.d)
+		return 2, 8, "LD D, d8", c.insLdRd8(c.d)
 	}
 
 	// LD E, d8
 	c.instructions[0x1E] = func() (int, int, string, error) {
-		return 2, 8, "LD E, d8", c.LdRd8(c.e)
+		return 2, 8, "LD E, d8", c.insLdRd8(c.e)
 	}
 
 	// LD H, d8
 	c.instructions[0x26] = func() (int, int, string, error) {
-		return 2, 8, "LD H, d8", c.LdRd8(c.h)
+		return 2, 8, "LD H, d8", c.insLdRd8(c.h)
 	}
 
 	// LD L, d8
 	c.instructions[0x2E] = func() (int, int, string, error) {
-		return 2, 8, "LD L, d8", c.LdRd8(c.l)
+		return 2, 8, "LD L, d8", c.insLdRd8(c.l)
 	}
 
 	// LD A, d8
 	c.instructions[0x3E] = func() (int, int, string, error) {
-		return 2, 8, "LD A, d8", c.LdRd8(c.a)
+		return 2, 8, "LD A, d8", c.insLdRd8(c.a)
 	}
 
 	// LD (HL), d8
@@ -346,18 +346,18 @@ func (c *Core) initInstructions() {
 
 	// LD A, (BC)
 	c.instructions[0x0A] = func() (int, int, string, error) {
-		return 1, 8, "LD A, (BC)", c.LdRm(c.a, c.bc.get())
+		return 1, 8, "LD A, (BC)", c.insLdRm(c.a, c.bc.get())
 	}
 
 	// LD A, (DE)
 	c.instructions[0x1A] = func() (int, int, string, error) {
-		return 1, 8, "LD A, (DE)", c.LdRm(c.a, c.de.get())
+		return 1, 8, "LD A, (DE)", c.insLdRm(c.a, c.de.get())
 	}
 
 	// LD A, (HL+)
 	c.instructions[0x2A] = func() (int, int, string, error) {
 
-		if err := c.LdRm(c.a, c.hl.get()); err != nil {
+		if err := c.insLdRm(c.a, c.hl.get()); err != nil {
 			return 1, 8, "LD A, (HL+)", err
 		}
 
@@ -369,7 +369,7 @@ func (c *Core) initInstructions() {
 	// LD A, (HL-)
 	c.instructions[0x3A] = func() (int, int, string, error) {
 
-		if err := c.LdRm(c.a, c.hl.get()); err != nil {
+		if err := c.insLdRm(c.a, c.hl.get()); err != nil {
 			return 1, 8, "LD A, (HL-)", err
 		}
 
@@ -380,37 +380,37 @@ func (c *Core) initInstructions() {
 
 	// LD B, (HL)
 	c.instructions[0x46] = func() (int, int, string, error) {
-		return 1, 8, "LD B, (HL)", c.LdRm(c.b, c.hl.get())
+		return 1, 8, "LD B, (HL)", c.insLdRm(c.b, c.hl.get())
 	}
 
 	// LD C, (HL)
 	c.instructions[0x4E] = func() (int, int, string, error) {
-		return 1, 8, "LD C, (HL)", c.LdRm(c.c, c.hl.get())
+		return 1, 8, "LD C, (HL)", c.insLdRm(c.c, c.hl.get())
 	}
 
 	// LD D, (HL)
 	c.instructions[0x56] = func() (int, int, string, error) {
-		return 1, 8, "LD D, (HL)", c.LdRm(c.d, c.hl.get())
+		return 1, 8, "LD D, (HL)", c.insLdRm(c.d, c.hl.get())
 	}
 
 	// LD E, (HL)
 	c.instructions[0x5E] = func() (int, int, string, error) {
-		return 1, 8, "LD E, (HL)", c.LdRm(c.e, c.hl.get())
+		return 1, 8, "LD E, (HL)", c.insLdRm(c.e, c.hl.get())
 	}
 
 	// LD H, (HL)
 	c.instructions[0x66] = func() (int, int, string, error) {
-		return 1, 8, "LD H, (HL)", c.LdRm(c.h, c.hl.get())
+		return 1, 8, "LD H, (HL)", c.insLdRm(c.h, c.hl.get())
 	}
 
 	// LD L, (HL)
 	c.instructions[0x6E] = func() (int, int, string, error) {
-		return 1, 8, "LD L, (HL)", c.LdRm(c.l, c.hl.get())
+		return 1, 8, "LD L, (HL)", c.insLdRm(c.l, c.hl.get())
 	}
 
 	// LD A, (HL)
 	c.instructions[0x7E] = func() (int, int, string, error) {
-		return 1, 8, "LD A, (HL)", c.LdRm(c.a, c.hl.get())
+		return 1, 8, "LD A, (HL)", c.insLdRm(c.a, c.hl.get())
 	}
 
 	// LD B, B
@@ -709,37 +709,37 @@ func (c *Core) initInstructions() {
 
 	// LD B, (HL)
 	c.instructions[0x46] = func() (int, int, string, error) {
-		return 1, 8, "LD B, (HL)", c.LdRm(c.b, c.hl.get())
+		return 1, 8, "LD B, (HL)", c.insLdRm(c.b, c.hl.get())
 	}
 
 	// LD C, (HL)
 	c.instructions[0x4E] = func() (int, int, string, error) {
-		return 1, 8, "LD C, (HL)", c.LdRm(c.c, c.hl.get())
+		return 1, 8, "LD C, (HL)", c.insLdRm(c.c, c.hl.get())
 	}
 
 	// LD D, (HL)
 	c.instructions[0x56] = func() (int, int, string, error) {
-		return 1, 8, "LD D, (HL)", c.LdRm(c.d, c.hl.get())
+		return 1, 8, "LD D, (HL)", c.insLdRm(c.d, c.hl.get())
 	}
 
 	// LD E, (HL)
 	c.instructions[0x5E] = func() (int, int, string, error) {
-		return 1, 8, "LD E, (HL)", c.LdRm(c.e, c.hl.get())
+		return 1, 8, "LD E, (HL)", c.insLdRm(c.e, c.hl.get())
 	}
 
 	// LD H, (HL)
 	c.instructions[0x66] = func() (int, int, string, error) {
-		return 1, 8, "LD H, (HL)", c.LdRm(c.h, c.hl.get())
+		return 1, 8, "LD H, (HL)", c.insLdRm(c.h, c.hl.get())
 	}
 
 	// LD L, (HL)
 	c.instructions[0x6E] = func() (int, int, string, error) {
-		return 1, 8, "LD L, (HL)", c.LdRm(c.l, c.hl.get())
+		return 1, 8, "LD L, (HL)", c.insLdRm(c.l, c.hl.get())
 	}
 
 	// LD A, (HL)
 	c.instructions[0x7E] = func() (int, int, string, error) {
-		return 1, 8, "LD A, (HL)", c.LdRm(c.a, c.hl.get())
+		return 1, 8, "LD A, (HL)", c.insLdRm(c.a, c.hl.get())
 	}
 
 	// LD (HL), B
@@ -849,7 +849,7 @@ func (c *Core) initInstructions() {
 			return 3, 16, "LD (a16), A", err
 		}
 
-		return 3, 16, "LD A, (a16)", c.LdRm(c.a, im16)
+		return 3, 16, "LD A, (a16)", c.insLdRm(c.a, im16)
 	}
 
 	////////////////////////////////////////////
@@ -858,37 +858,37 @@ func (c *Core) initInstructions() {
 
 	// ADD A, B
 	c.instructions[0x80] = func() (int, int, string, error) {
-		c.AddAn(c.b.get())
+		c.insAddAn(c.b.get())
 		return 1, 4, "ADD A, B", nil
 	}
 
 	// ADD A, C
 	c.instructions[0x81] = func() (int, int, string, error) {
-		c.AddAn(c.c.get())
+		c.insAddAn(c.c.get())
 		return 1, 4, "ADD A, C", nil
 	}
 
 	// ADD A, D
 	c.instructions[0x82] = func() (int, int, string, error) {
-		c.AddAn(c.d.get())
+		c.insAddAn(c.d.get())
 		return 1, 4, "ADD A, D", nil
 	}
 
 	// ADD A, E
 	c.instructions[0x83] = func() (int, int, string, error) {
-		c.AddAn(c.e.get())
+		c.insAddAn(c.e.get())
 		return 1, 4, "ADD A, E", nil
 	}
 
 	// ADD A, H
 	c.instructions[0x84] = func() (int, int, string, error) {
-		c.AddAn(c.h.get())
+		c.insAddAn(c.h.get())
 		return 1, 4, "ADD A, H", nil
 	}
 
 	// ADD A, L
 	c.instructions[0x85] = func() (int, int, string, error) {
-		c.AddAn(c.l.get())
+		c.insAddAn(c.l.get())
 		return 1, 4, "ADD A, L", nil
 	}
 
@@ -901,14 +901,14 @@ func (c *Core) initInstructions() {
 			return 1, 8, "ADD A, (HL)", err
 		}
 
-		c.AddAn(v)
+		c.insAddAn(v)
 
 		return 1, 8, "ADD A, (HL)", nil
 	}
 
 	// ADD A, A
 	c.instructions[0x87] = func() (int, int, string, error) {
-		c.AddAn(c.a.get())
+		c.insAddAn(c.a.get())
 		return 1, 4, "ADD A, A", nil
 	}
 
@@ -921,44 +921,44 @@ func (c *Core) initInstructions() {
 			return 2, 8, "ADD A, d8", err
 		}
 
-		c.AddAn(im8)
+		c.insAddAn(im8)
 
 		return 2, 8, "ADD A, d8", nil
 	}
 
 	// ADC A, B
 	c.instructions[0x88] = func() (int, int, string, error) {
-		c.AdcAn(c.b.get())
+		c.insAdcAn(c.b.get())
 		return 1, 4, "ADC A, B", nil
 	}
 
 	// ADC A, C
 	c.instructions[0x89] = func() (int, int, string, error) {
-		c.AdcAn(c.c.get())
+		c.insAdcAn(c.c.get())
 		return 1, 4, "ADC A, C", nil
 	}
 
 	// ADC A, D
 	c.instructions[0x8A] = func() (int, int, string, error) {
-		c.AdcAn(c.d.get())
+		c.insAdcAn(c.d.get())
 		return 1, 4, "ADC A, D", nil
 	}
 
 	// ADC A, E
 	c.instructions[0x8B] = func() (int, int, string, error) {
-		c.AdcAn(c.e.get())
+		c.insAdcAn(c.e.get())
 		return 1, 4, "ADC A, E", nil
 	}
 
 	// ADC A, H
 	c.instructions[0x8C] = func() (int, int, string, error) {
-		c.AdcAn(c.h.get())
+		c.insAdcAn(c.h.get())
 		return 1, 4, "ADC A, H", nil
 	}
 
 	// ADC A, L
 	c.instructions[0x8D] = func() (int, int, string, error) {
-		c.AdcAn(c.l.get())
+		c.insAdcAn(c.l.get())
 		return 1, 4, "ADC A, L", nil
 	}
 
@@ -971,14 +971,14 @@ func (c *Core) initInstructions() {
 			return 1, 8, "ADC A, (HL)", err
 		}
 
-		c.AdcAn(v)
+		c.insAdcAn(v)
 
 		return 1, 8, "ADC A, (HL)", nil
 	}
 
 	// ADC A, A
 	c.instructions[0x8F] = func() (int, int, string, error) {
-		c.AdcAn(c.a.get())
+		c.insAdcAn(c.a.get())
 		return 1, 4, "ADC A, A", nil
 	}
 
@@ -991,44 +991,44 @@ func (c *Core) initInstructions() {
 			return 2, 8, "ADC A, d8", err
 		}
 
-		c.AdcAn(im8)
+		c.insAdcAn(im8)
 
 		return 2, 8, "ADC A, d8", nil
 	}
 
 	// SUB B
 	c.instructions[0x90] = func() (int, int, string, error) {
-		c.SubN(c.b.get())
+		c.insSubN(c.b.get())
 		return 1, 4, "SUB B", nil
 	}
 
 	// SUB C
 	c.instructions[0x91] = func() (int, int, string, error) {
-		c.SubN(c.c.get())
+		c.insSubN(c.c.get())
 		return 1, 4, "SUB C", nil
 	}
 
 	// SUB D
 	c.instructions[0x92] = func() (int, int, string, error) {
-		c.SubN(c.d.get())
+		c.insSubN(c.d.get())
 		return 1, 4, "SUB D", nil
 	}
 
 	// SUB E
 	c.instructions[0x93] = func() (int, int, string, error) {
-		c.SubN(c.e.get())
+		c.insSubN(c.e.get())
 		return 1, 4, "SUB E", nil
 	}
 
 	// SUB H
 	c.instructions[0x94] = func() (int, int, string, error) {
-		c.SubN(c.h.get())
+		c.insSubN(c.h.get())
 		return 1, 4, "SUB H", nil
 	}
 
 	// SUB L
 	c.instructions[0x95] = func() (int, int, string, error) {
-		c.SubN(c.l.get())
+		c.insSubN(c.l.get())
 		return 1, 4, "SUB L", nil
 	}
 
@@ -1041,14 +1041,14 @@ func (c *Core) initInstructions() {
 			return 1, 8, "SUB (HL)", err
 		}
 
-		c.SubN(v)
+		c.insSubN(v)
 
 		return 1, 8, "SUB (HL)", nil
 	}
 
 	// SUB A
 	c.instructions[0x97] = func() (int, int, string, error) {
-		c.SubN(c.a.get())
+		c.insSubN(c.a.get())
 		return 1, 4, "SUB A", nil
 	}
 
@@ -1061,44 +1061,44 @@ func (c *Core) initInstructions() {
 			return 2, 8, "SUB d8", err
 		}
 
-		c.SubN(im8)
+		c.insSubN(im8)
 
 		return 2, 8, "SUB d8", nil
 	}
 
 	// SBC A, B
 	c.instructions[0x98] = func() (int, int, string, error) {
-		c.SbcAn(c.b.get())
+		c.insSbcAn(c.b.get())
 		return 1, 4, "SBC A, B", nil
 	}
 
 	// SBC A, C
 	c.instructions[0x99] = func() (int, int, string, error) {
-		c.SbcAn(c.c.get())
+		c.insSbcAn(c.c.get())
 		return 1, 4, "SBC A, C", nil
 	}
 
 	// SBC A, D
 	c.instructions[0x9A] = func() (int, int, string, error) {
-		c.SbcAn(c.d.get())
+		c.insSbcAn(c.d.get())
 		return 1, 4, "SBC A, D", nil
 	}
 
 	// SBC A, E
 	c.instructions[0x9B] = func() (int, int, string, error) {
-		c.SbcAn(c.e.get())
+		c.insSbcAn(c.e.get())
 		return 1, 4, "SBC A, E", nil
 	}
 
 	// SBC A, H
 	c.instructions[0x9C] = func() (int, int, string, error) {
-		c.SbcAn(c.h.get())
+		c.insSbcAn(c.h.get())
 		return 1, 4, "SBC A, H", nil
 	}
 
 	// SBC A, L
 	c.instructions[0x9D] = func() (int, int, string, error) {
-		c.SbcAn(c.l.get())
+		c.insSbcAn(c.l.get())
 		return 1, 4, "SBC A, L", nil
 	}
 
@@ -1111,14 +1111,14 @@ func (c *Core) initInstructions() {
 			return 1, 8, "SBC A, (HL)", err
 		}
 
-		c.SbcAn(v)
+		c.insSbcAn(v)
 
 		return 1, 8, "SBC A, (HL)", nil
 	}
 
 	// SBC A, A
 	c.instructions[0x9F] = func() (int, int, string, error) {
-		c.SbcAn(c.a.get())
+		c.insSbcAn(c.a.get())
 		return 1, 4, "SBC A, A", nil
 	}
 
@@ -1131,44 +1131,44 @@ func (c *Core) initInstructions() {
 			return 2, 8, "SBC A, d8", err
 		}
 
-		c.SbcAn(im8)
+		c.insSbcAn(im8)
 
 		return 2, 8, "SBC A, d8", nil
 	}
 
 	// AND B
 	c.instructions[0xA0] = func() (int, int, string, error) {
-		c.AndN(c.b.get())
+		c.insAndN(c.b.get())
 		return 1, 4, "AND B", nil
 	}
 
 	// AND C
 	c.instructions[0xA1] = func() (int, int, string, error) {
-		c.AndN(c.c.get())
+		c.insAndN(c.c.get())
 		return 1, 4, "AND C", nil
 	}
 
 	// AND D
 	c.instructions[0xA2] = func() (int, int, string, error) {
-		c.AndN(c.d.get())
+		c.insAndN(c.d.get())
 		return 1, 4, "AND D", nil
 	}
 
 	// AND E
 	c.instructions[0xA3] = func() (int, int, string, error) {
-		c.AndN(c.e.get())
+		c.insAndN(c.e.get())
 		return 1, 4, "AND E", nil
 	}
 
 	// AND H
 	c.instructions[0xA4] = func() (int, int, string, error) {
-		c.AndN(c.h.get())
+		c.insAndN(c.h.get())
 		return 1, 4, "AND H", nil
 	}
 
 	// AND L
 	c.instructions[0xA5] = func() (int, int, string, error) {
-		c.AndN(c.l.get())
+		c.insAndN(c.l.get())
 		return 1, 4, "AND L", nil
 	}
 
@@ -1181,14 +1181,14 @@ func (c *Core) initInstructions() {
 			return 1, 8, "AND (HL)", err
 		}
 
-		c.AndN(v)
+		c.insAndN(v)
 
 		return 1, 8, "AND (HL)", nil
 	}
 
 	// AND A
 	c.instructions[0xA7] = func() (int, int, string, error) {
-		c.AndN(c.a.get())
+		c.insAndN(c.a.get())
 		return 1, 4, "AND A", nil
 	}
 
@@ -1201,44 +1201,44 @@ func (c *Core) initInstructions() {
 			return 2, 8, "AND d8", err
 		}
 
-		c.AndN(im8)
+		c.insAndN(im8)
 
 		return 2, 8, "AND d8", nil
 	}
 
 	// XOR B
 	c.instructions[0xA8] = func() (int, int, string, error) {
-		c.XorN(c.b.get())
+		c.insXorN(c.b.get())
 		return 1, 4, "XOR B", nil
 	}
 
 	// XOR C
 	c.instructions[0xA9] = func() (int, int, string, error) {
-		c.XorN(c.c.get())
+		c.insXorN(c.c.get())
 		return 1, 4, "XOR C", nil
 	}
 
 	// XOR D
 	c.instructions[0xAA] = func() (int, int, string, error) {
-		c.XorN(c.d.get())
+		c.insXorN(c.d.get())
 		return 1, 4, "XOR D", nil
 	}
 
 	// XOR E
 	c.instructions[0xAB] = func() (int, int, string, error) {
-		c.XorN(c.e.get())
+		c.insXorN(c.e.get())
 		return 1, 4, "XOR E", nil
 	}
 
 	// XOR H
 	c.instructions[0xAC] = func() (int, int, string, error) {
-		c.XorN(c.h.get())
+		c.insXorN(c.h.get())
 		return 1, 4, "XOR H", nil
 	}
 
 	// XOR L
 	c.instructions[0xAD] = func() (int, int, string, error) {
-		c.XorN(c.l.get())
+		c.insXorN(c.l.get())
 		return 1, 4, "XOR L", nil
 	}
 
@@ -1251,14 +1251,14 @@ func (c *Core) initInstructions() {
 			return 1, 8, "XOR (HL)", err
 		}
 
-		c.XorN(v)
+		c.insXorN(v)
 
 		return 1, 8, "XOR (HL)", nil
 	}
 
 	// XOR A
 	c.instructions[0xAF] = func() (int, int, string, error) {
-		c.XorN(c.a.get())
+		c.insXorN(c.a.get())
 		return 1, 4, "XOR A", nil
 	}
 
@@ -1271,44 +1271,44 @@ func (c *Core) initInstructions() {
 			return 2, 8, "XOR d8", err
 		}
 
-		c.XorN(im8)
+		c.insXorN(im8)
 
 		return 2, 8, "XOR d8", nil
 	}
 
 	// OR B
 	c.instructions[0xB0] = func() (int, int, string, error) {
-		c.OrN(c.b.get())
+		c.insOrN(c.b.get())
 		return 1, 4, "OR B", nil
 	}
 
 	// OR C
 	c.instructions[0xB1] = func() (int, int, string, error) {
-		c.OrN(c.c.get())
+		c.insOrN(c.c.get())
 		return 1, 4, "OR C", nil
 	}
 
 	// OR D
 	c.instructions[0xB2] = func() (int, int, string, error) {
-		c.OrN(c.d.get())
+		c.insOrN(c.d.get())
 		return 1, 4, "OR D", nil
 	}
 
 	// OR E
 	c.instructions[0xB3] = func() (int, int, string, error) {
-		c.OrN(c.e.get())
+		c.insOrN(c.e.get())
 		return 1, 4, "OR E", nil
 	}
 
 	// OR H
 	c.instructions[0xB4] = func() (int, int, string, error) {
-		c.OrN(c.h.get())
+		c.insOrN(c.h.get())
 		return 1, 4, "OR H", nil
 	}
 
 	// OR L
 	c.instructions[0xB5] = func() (int, int, string, error) {
-		c.OrN(c.l.get())
+		c.insOrN(c.l.get())
 		return 1, 4, "OR L", nil
 	}
 
@@ -1321,14 +1321,14 @@ func (c *Core) initInstructions() {
 			return 1, 8, "OR (HL)", err
 		}
 
-		c.OrN(v)
+		c.insOrN(v)
 
 		return 1, 8, "OR (HL)", nil
 	}
 
 	// OR A
 	c.instructions[0xB7] = func() (int, int, string, error) {
-		c.OrN(c.a.get())
+		c.insOrN(c.a.get())
 		return 1, 4, "OR A", nil
 	}
 
@@ -1341,44 +1341,44 @@ func (c *Core) initInstructions() {
 			return 2, 8, "OR d8", err
 		}
 
-		c.OrN(im8)
+		c.insOrN(im8)
 
 		return 2, 8, "OR d8", nil
 	}
 
 	// CP B
 	c.instructions[0xB8] = func() (int, int, string, error) {
-		c.CpN(c.b.get())
+		c.insCpN(c.b.get())
 		return 1, 4, "CP B", nil
 	}
 
 	// CP C
 	c.instructions[0xB9] = func() (int, int, string, error) {
-		c.CpN(c.c.get())
+		c.insCpN(c.c.get())
 		return 1, 4, "CP C", nil
 	}
 
 	// CP D
 	c.instructions[0xBA] = func() (int, int, string, error) {
-		c.CpN(c.d.get())
+		c.insCpN(c.d.get())
 		return 1, 4, "CP D", nil
 	}
 
 	// CP E
 	c.instructions[0xBB] = func() (int, int, string, error) {
-		c.CpN(c.e.get())
+		c.insCpN(c.e.get())
 		return 1, 4, "CP E", nil
 	}
 
 	// CP H
 	c.instructions[0xBC] = func() (int, int, string, error) {
-		c.CpN(c.h.get())
+		c.insCpN(c.h.get())
 		return 1, 4, "CP H", nil
 	}
 
 	// CP L
 	c.instructions[0xBD] = func() (int, int, string, error) {
-		c.CpN(c.l.get())
+		c.insCpN(c.l.get())
 		return 1, 4, "CP L", nil
 	}
 
@@ -1391,14 +1391,14 @@ func (c *Core) initInstructions() {
 			return 1, 8, "CP (HL)", err
 		}
 
-		c.CpN(v)
+		c.insCpN(v)
 
 		return 1, 8, "CP (HL)", nil
 	}
 
 	// CP A
 	c.instructions[0xBF] = func() (int, int, string, error) {
-		c.CpN(c.a.get())
+		c.insCpN(c.a.get())
 		return 1, 4, "CP A", nil
 	}
 
@@ -1411,50 +1411,50 @@ func (c *Core) initInstructions() {
 			return 2, 8, "CP d8", err
 		}
 
-		c.CpN(im8)
+		c.insCpN(im8)
 
 		return 2, 8, "CP d8", nil
 	}
 
 	// INC B
 	c.instructions[0x04] = func() (int, int, string, error) {
-		c.IncR(c.b)
+		c.insIncR(c.b)
 		return 1, 4, "INC B", nil
 	}
 
 	// INC C
 	c.instructions[0x0C] = func() (int, int, string, error) {
-		c.IncR(c.c)
+		c.insIncR(c.c)
 		return 1, 4, "INC C", nil
 	}
 
 	// INC D
 	c.instructions[0x14] = func() (int, int, string, error) {
-		c.IncR(c.d)
+		c.insIncR(c.d)
 		return 1, 4, "INC D", nil
 	}
 
 	// INC E
 	c.instructions[0x1C] = func() (int, int, string, error) {
-		c.IncR(c.e)
+		c.insIncR(c.e)
 		return 1, 4, "INC E", nil
 	}
 
 	// INC H
 	c.instructions[0x24] = func() (int, int, string, error) {
-		c.IncR(c.h)
+		c.insIncR(c.h)
 		return 1, 4, "INC H", nil
 	}
 
 	// INC L
 	c.instructions[0x2C] = func() (int, int, string, error) {
-		c.IncR(c.l)
+		c.insIncR(c.l)
 		return 1, 4, "INC L", nil
 	}
 
 	// INC A
 	c.instructions[0x3C] = func() (int, int, string, error) {
-		c.IncR(c.a)
+		c.insIncR(c.a)
 		return 1, 4, "INC A", nil
 	}
 
@@ -1478,43 +1478,43 @@ func (c *Core) initInstructions() {
 
 	// DEC B
 	c.instructions[0x05] = func() (int, int, string, error) {
-		c.DecR(c.b)
+		c.insDecR(c.b)
 		return 1, 4, "DEC B", nil
 	}
 
 	// DEC C
 	c.instructions[0x0D] = func() (int, int, string, error) {
-		c.DecR(c.c)
+		c.insDecR(c.c)
 		return 1, 4, "DEC C", nil
 	}
 
 	// DEC D
 	c.instructions[0x15] = func() (int, int, string, error) {
-		c.DecR(c.d)
+		c.insDecR(c.d)
 		return 1, 4, "DEC D", nil
 	}
 
 	// DEC E
 	c.instructions[0x1D] = func() (int, int, string, error) {
-		c.DecR(c.e)
+		c.insDecR(c.e)
 		return 1, 4, "DEC E", nil
 	}
 
 	// DEC H
 	c.instructions[0x25] = func() (int, int, string, error) {
-		c.DecR(c.h)
+		c.insDecR(c.h)
 		return 1, 4, "DEC H", nil
 	}
 
 	// DEC L
 	c.instructions[0x2D] = func() (int, int, string, error) {
-		c.DecR(c.l)
+		c.insDecR(c.l)
 		return 1, 4, "DEC L", nil
 	}
 
 	// DEC A
 	c.instructions[0x3D] = func() (int, int, string, error) {
-		c.DecR(c.a)
+		c.insDecR(c.a)
 		return 1, 4, "DEC A", nil
 	}
 
@@ -1614,7 +1614,7 @@ func (c *Core) initInstructions() {
 
 	// JR r8
 	c.instructions[0x18] = func() (int, int, string, error) {
-		return 2, 12, "JR r8", c.JrCondR8(true)
+		return 2, 12, "JR r8", c.insJrCondR8(true)
 	}
 
 	// JR NZ, r8
@@ -1622,7 +1622,7 @@ func (c *Core) initInstructions() {
 
 		nz := !c.zeroFlag()
 
-		if err := c.JrCondR8(nz); err != nil {
+		if err := c.insJrCondR8(nz); err != nil {
 			return 2, 8, "JR NZ, r8", err
 		}
 
@@ -1638,7 +1638,7 @@ func (c *Core) initInstructions() {
 
 		z := c.zeroFlag()
 
-		if err := c.JrCondR8(z); err != nil {
+		if err := c.insJrCondR8(z); err != nil {
 			return 2, 8, "JR Z, r8", err
 		}
 
@@ -1654,7 +1654,7 @@ func (c *Core) initInstructions() {
 
 		nc := !c.carryFlag()
 
-		if err := c.JrCondR8(nc); err != nil {
+		if err := c.insJrCondR8(nc); err != nil {
 			return 2, 8, "JR NC, r8", err
 		}
 
@@ -1670,7 +1670,7 @@ func (c *Core) initInstructions() {
 
 		carry := c.carryFlag()
 
-		if err := c.JrCondR8(carry); err != nil {
+		if err := c.insJrCondR8(carry); err != nil {
 			return 2, 8, "JR C, r8", err
 		}
 
@@ -1683,13 +1683,13 @@ func (c *Core) initInstructions() {
 
 	// RET
 	c.instructions[0xC9] = func() (int, int, string, error) {
-		return 1, 16, "RET", c.RetCond(true)
+		return 1, 16, "RET", c.insRetCond(true)
 	}
 
 	// RETI
 	c.instructions[0xD9] = func() (int, int, string, error) {
 
-		if err := c.RetCond(true); err != nil {
+		if err := c.insRetCond(true); err != nil {
 			return 1, 16, "RETI", err
 		}
 
@@ -1703,7 +1703,7 @@ func (c *Core) initInstructions() {
 
 		nz := !c.zeroFlag()
 
-		if err := c.RetCond(nz); err != nil {
+		if err := c.insRetCond(nz); err != nil {
 			return 1, 8, "RET NZ", err
 		}
 
@@ -1719,7 +1719,7 @@ func (c *Core) initInstructions() {
 
 		z := c.zeroFlag()
 
-		if err := c.RetCond(z); err != nil {
+		if err := c.insRetCond(z); err != nil {
 			return 1, 8, "RET Z", err
 		}
 
@@ -1735,7 +1735,7 @@ func (c *Core) initInstructions() {
 
 		nc := !c.carryFlag()
 
-		if err := c.RetCond(nc); err != nil {
+		if err := c.insRetCond(nc); err != nil {
 			return 1, 8, "RET NC", err
 		}
 
@@ -1751,7 +1751,7 @@ func (c *Core) initInstructions() {
 
 		carry := c.carryFlag()
 
-		if err := c.RetCond(carry); err != nil {
+		if err := c.insRetCond(carry); err != nil {
 			return 1, 8, "RET C", err
 		}
 
@@ -1764,7 +1764,7 @@ func (c *Core) initInstructions() {
 
 	// JP a16
 	c.instructions[0xC3] = func() (int, int, string, error) {
-		return 3, 16, "JP a16", c.JpCondA16(true)
+		return 3, 16, "JP a16", c.insJpCondA16(true)
 	}
 
 	// JP NZ, a16
@@ -1772,7 +1772,7 @@ func (c *Core) initInstructions() {
 
 		nz := !c.zeroFlag()
 
-		if err := c.JpCondA16(nz); err != nil {
+		if err := c.insJpCondA16(nz); err != nil {
 			return 3, 12, "JP NZ, a16", err
 		}
 
@@ -1788,7 +1788,7 @@ func (c *Core) initInstructions() {
 
 		z := c.zeroFlag()
 
-		if err := c.JpCondA16(z); err != nil {
+		if err := c.insJpCondA16(z); err != nil {
 			return 3, 12, "JP Z, a16", err
 		}
 
@@ -1804,7 +1804,7 @@ func (c *Core) initInstructions() {
 
 		nc := !c.carryFlag()
 
-		if err := c.JpCondA16(nc); err != nil {
+		if err := c.insJpCondA16(nc); err != nil {
 			return 3, 12, "JP NC, a16", err
 		}
 
@@ -1820,7 +1820,7 @@ func (c *Core) initInstructions() {
 
 		carry := c.carryFlag()
 
-		if err := c.JpCondA16(carry); err != nil {
+		if err := c.insJpCondA16(carry); err != nil {
 			return 3, 12, "JP C, a16", err
 		}
 
@@ -1839,7 +1839,7 @@ func (c *Core) initInstructions() {
 
 	// CALL a16
 	c.instructions[0xCD] = func() (int, int, string, error) {
-		return 3, 24, "CALL a16", c.CallCondA16(true)
+		return 3, 24, "CALL a16", c.insCallCondA16(true)
 	}
 
 	// CALL NZ, a16
@@ -1847,7 +1847,7 @@ func (c *Core) initInstructions() {
 
 		nz := !c.zeroFlag()
 
-		if err := c.CallCondA16(nz); err != nil {
+		if err := c.insCallCondA16(nz); err != nil {
 			return 3, 12, "CALL NZ, a16", err
 		}
 
@@ -1863,7 +1863,7 @@ func (c *Core) initInstructions() {
 
 		z := c.zeroFlag()
 
-		if err := c.CallCondA16(z); err != nil {
+		if err := c.insCallCondA16(z); err != nil {
 			return 3, 12, "CALL Z, a16", err
 		}
 
@@ -1879,7 +1879,7 @@ func (c *Core) initInstructions() {
 
 		nc := !c.carryFlag()
 
-		if err := c.CallCondA16(nc); err != nil {
+		if err := c.insCallCondA16(nc); err != nil {
 			return 3, 12, "CALL NC, a16", err
 		}
 
@@ -1895,7 +1895,7 @@ func (c *Core) initInstructions() {
 
 		carry := c.carryFlag()
 
-		if err := c.CallCondA16(carry); err != nil {
+		if err := c.insCallCondA16(carry); err != nil {
 			return 3, 12, "CALL C, a16", err
 		}
 
@@ -1908,42 +1908,42 @@ func (c *Core) initInstructions() {
 
 	// RST 00H
 	c.instructions[0xC7] = func() (int, int, string, error) {
-		return 1, 16, "RST 00H", c.Rst(0x0000)
+		return 1, 16, "RST 00H", c.insRst(0x0000)
 	}
 
 	// RST 08H
 	c.instructions[0xCF] = func() (int, int, string, error) {
-		return 1, 16, "RST 08H", c.Rst(0x0008)
+		return 1, 16, "RST 08H", c.insRst(0x0008)
 	}
 
 	// RST 10H
 	c.instructions[0xD7] = func() (int, int, string, error) {
-		return 1, 16, "RST 10H", c.Rst(0x0010)
+		return 1, 16, "RST 10H", c.insRst(0x0010)
 	}
 
 	// RST 18H
 	c.instructions[0xDF] = func() (int, int, string, error) {
-		return 1, 16, "RST 18H", c.Rst(0x0018)
+		return 1, 16, "RST 18H", c.insRst(0x0018)
 	}
 
 	// RST 20H
 	c.instructions[0xE7] = func() (int, int, string, error) {
-		return 1, 16, "RST 20H", c.Rst(0x0020)
+		return 1, 16, "RST 20H", c.insRst(0x0020)
 	}
 
 	// RST 28H
 	c.instructions[0xEF] = func() (int, int, string, error) {
-		return 1, 16, "RST 28H", c.Rst(0x0028)
+		return 1, 16, "RST 28H", c.insRst(0x0028)
 	}
 
 	// RST 30H
 	c.instructions[0xF7] = func() (int, int, string, error) {
-		return 1, 16, "RST 30H", c.Rst(0x0030)
+		return 1, 16, "RST 30H", c.insRst(0x0030)
 	}
 
 	// RST 38H
 	c.instructions[0xFF] = func() (int, int, string, error) {
-		return 1, 16, "RST 38H", c.Rst(0x0038)
+		return 1, 16, "RST 38H", c.insRst(0x0038)
 	}
 
 	/////////////////////////////
@@ -1952,25 +1952,25 @@ func (c *Core) initInstructions() {
 
 	// RLCA
 	c.instructions[0x07] = func() (int, int, string, error) {
-		c.RlcR(c.a, false)
+		c.insRlcR(c.a, false)
 		return 1, 4, "RLCA", nil
 	}
 
 	// RRCA
 	c.instructions[0x0F] = func() (int, int, string, error) {
-		c.RrcR(c.a, false)
+		c.insRrcR(c.a, false)
 		return 1, 4, "RRCA", nil
 	}
 
 	// RLA
 	c.instructions[0x17] = func() (int, int, string, error) {
-		c.RlR(c.a, false)
+		c.insRlR(c.a, false)
 		return 1, 4, "RLA", nil
 	}
 
 	// RRA
 	c.instructions[0x1F] = func() (int, int, string, error) {
-		c.RrR(c.a, false)
+		c.insRrR(c.a, false)
 		return 1, 4, "RRA", nil
 	}
 }

@@ -11,10 +11,11 @@ package display
 
 import (
 	"fmt"
-	"github.com/moshenahmias/gopherboy/cpu"
-	"github.com/moshenahmias/gopherboy/memory"
 	"sort"
 	"time"
+
+	"github.com/moshenahmias/gopherboy/cpu"
+	"github.com/moshenahmias/gopherboy/memory"
 )
 
 // AddrLCDC is the LCDC register address
@@ -639,7 +640,7 @@ func (g *GPU) renderWindowPixel(x, y byte) error {
 	wx := byte(g.wx)
 
 	if wx < 7 {
-		return fmt.Errorf("wx < 7 (wx = %d)", wx)
+		return nil
 	}
 
 	wy := byte(g.wy)
