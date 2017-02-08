@@ -13,6 +13,7 @@ import (
 	"errors"
 	"io/ioutil"
 
+	"github.com/moshenahmias/gopherboy/cpu"
 	"github.com/moshenahmias/gopherboy/memory"
 
 	"fmt"
@@ -27,7 +28,7 @@ type Cartridge struct {
 }
 
 // NewCartridge creates Cartridge instance
-func NewCartridge(fileROM string) (*Cartridge, error) {
+func NewCartridge(fileROM string, core *cpu.Core) (*Cartridge, error) {
 
 	// load rom from file
 	romData, err := ioutil.ReadFile(fileROM)
@@ -86,6 +87,12 @@ func NewCartridge(fileROM string) (*Cartridge, error) {
 	case 0x05, 0x06: // MBC2
 
 		c.mbc = NewMBC2(romData)
+
+	case 0x0F, 0x10, 0x11, 0x12, 0x13: // MBC3
+
+		mbc3 := NewMBC3(romData, ramData)
+		core.RegisterToClockChanges(mbc3)
+		c.mbc = mbc3
 
 	default:
 

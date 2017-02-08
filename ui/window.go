@@ -10,8 +10,9 @@
 package ui
 
 import (
-	"github.com/moshenahmias/gopherboy/display"
 	"unsafe"
+
+	"github.com/moshenahmias/gopherboy/display"
 
 	"github.com/veandco/go-sdl2/sdl"
 )

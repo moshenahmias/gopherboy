@@ -131,7 +131,7 @@ func run(romFile, biosFile string, settings *config.Settings) error {
 		}
 
 		// load cartridg
-		cartridge, err := game.NewCartridge(romFile)
+		cartridge, err := game.NewCartridge(romFile, core)
 
 		if err != nil {
 			return err
@@ -159,9 +159,17 @@ func run(romFile, biosFile string, settings *config.Settings) error {
 		}()
 
 		// wait for keyboard events
-		if input.WaitForKeyEvents() == ui.ControlEventQuit {
-			quit = true
+		keyEvent := input.WaitForKeyEvents()
+
+		for keyEvent == ui.ControlEventPause {
+
+			// pause
+			gameboy.Pause()
+			keyEvent = input.WaitForKeyEvents()
 		}
+
+		// quit
+		quit = keyEvent == ui.ControlEventQuit
 
 		// stop cpu
 		gameboy.Stop()

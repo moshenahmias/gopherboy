@@ -1,16 +1,13 @@
 # gopherboy
 A Nintendo Game Boy emulator written in golang.
 
-1. Passes blargg's cpu_instrs.gb test.
-2. Currently supports only none-MBC, MBC1 and MBC2 roms.
-3. Sound not implemented.
+Passes blargg's cpu_instrs.gb test.
 
 ### TODO
 
-1. MBC3.
+1. Sound.
 2. Save / Load game state.
 3. Serial Link.
-4. Sound.
 
 ### Dependencies
 
@@ -52,6 +49,7 @@ Usage of gopherboy:
 | Select        | Space         | 
 | Start         | Enter         | 
 | Reset         | F1            | 
+| Pause         | F2            | 
 | Exit          | ESC           | 
 
 ### Settings
@@ -80,3 +78,5 @@ FPS rate, screen size and color palette.
 ![Contra - The Alien Wars](images/gopherboy2.png)&nbsp;
 ![BattleCity](images/gopherboy3.png)&nbsp;
 ![Tetris](images/gopherboy4.png)&nbsp;
+![Pokemon Red](images/gopherboy5.png)&nbsp;
+![Megaman II](images/gopherboy6.png)&nbsp;

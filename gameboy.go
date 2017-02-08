@@ -118,8 +118,8 @@ func (g *Gameboy) Start() error {
 }
 
 // Pause the cpu
-func (g *Gameboy) Pause() error {
-	return nil
+func (g *Gameboy) Pause() {
+	g.core.Pause()
 }
 
 // Stop the cpu

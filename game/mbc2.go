@@ -60,6 +60,10 @@ func (m *MBC2) Read(addr uint16) (byte, error) {
 		return m.ram.Read(addr)
 	}
 
+	if 0xA200 <= addr && addr <= 0xBFFF {
+		return 0, nil
+	}
+
 	return 0, memory.ReadOutOfRangeError(addr)
 }
 
@@ -92,6 +96,10 @@ func (m *MBC2) Write(addr uint16, data byte) error {
 		return nil
 	}
 
+	if 0x4000 <= addr && addr <= 0x7FFF {
+		return nil
+	}
+
 	// ram
 	if 0xA000 <= addr && addr <= 0xA1FF {
 
@@ -100,6 +108,10 @@ func (m *MBC2) Write(addr uint16, data byte) error {
 		}
 
 		return m.ram.Write(addr, data&0x0F)
+	}
+
+	if 0xA200 <= addr && addr <= 0xBFFF {
+		return nil
 	}
 
 	return memory.WriteOutOfRangeError(addr)

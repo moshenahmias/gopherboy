@@ -13,7 +13,11 @@ import (
 	"github.com/moshenahmias/gopherboy/memory"
 
 	"fmt"
+	"time"
 )
+
+// Frequency of the cpu cycles per seconds
+const Frequency int = 4194304
 
 func noSuchInstructionError(opcode byte) error {
 	return fmt.Errorf("No such instruction %02x", opcode)
@@ -56,6 +60,8 @@ type Core struct {
 	halt       bool          // halt flag
 	stop       bool          // bool flag
 	timedUnits []TimedUnit   // clocked units
+
+	pause bool
 }
 
 // NewCore creates Core instance
@@ -98,6 +104,10 @@ func (c *Core) Start(pc uint16) error {
 
 	for !c.quit {
 
+		for c.pause && !c.quit {
+			time.Sleep(time.Millisecond * 100)
+		}
+
 		opcode, err := c.mmu.Read(c.pc.get())
 
 		if err != nil {
@@ -120,6 +130,10 @@ func (c *Core) Start(pc uint16) error {
 
 		for do := true; do; do = (c.halt || c.stop) && !c.quit {
 
+			for c.pause && !c.quit {
+				time.Sleep(time.Millisecond * 100)
+			}
+
 			if c.halt || c.stop {
 				if _, err := c.mmu.Read(0xFF00); err != nil {
 					return c.wrapError(err, "joyp read (during stop) failed")
@@ -141,6 +155,11 @@ func (c *Core) Start(pc uint16) error {
 	return nil
 }
 
+// Pause the cpu (or resume if already paused)
+func (c *Core) Pause() {
+	c.pause = !c.pause
+}
+
 // Stop the execition loop
 func (c *Core) Stop() {
 	c.quit = true
@@ -148,7 +167,7 @@ func (c *Core) Stop() {
 
 // wrapErrorf is the formatted version of wrapError
 func (c *Core) wrapErrorf(err error, format string, v ...interface{}) error {
-	return c.wrapErrorf(err, fmt.Sprintf(format, v...))
+	return c.wrapError(err, fmt.Sprintf(format, v...))
 }
 
 // wrapError with a custom message and cpu info

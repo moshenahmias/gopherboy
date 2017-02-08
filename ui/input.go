@@ -11,6 +11,7 @@ package ui
 
 import (
 	"errors"
+
 	"github.com/moshenahmias/gopherboy/config"
 	"github.com/moshenahmias/gopherboy/joypad"
 
@@ -22,6 +23,8 @@ import (
 // ErrInvalidJoypadCode returned for an invalid joypad code
 var ErrInvalidJoypadCode = errors.New("Invalid joypad code")
 
+const maxQueueSize int = 20
+
 // ControlEvent is a key event that is not one
 // of the 8 gameboy key events
 type ControlEvent byte
@@ -31,6 +34,9 @@ const ControlEventQuit ControlEvent = 0
 
 // ControlEventReset signals a reset request
 const ControlEventReset ControlEvent = 1
+
+// ControlEventPause signals a pause request
+const ControlEventPause ControlEvent = 2
 
 // Input is a Keystroker implementer
 type Input struct {
@@ -117,7 +123,13 @@ func (i *Input) AddKeyEvent(code sdl.Keycode, pressed bool) {
 		if btn, err := i.convertJoypadCode(v); err == nil {
 
 			i.m.Lock()
+
 			i.keystrokes = append(i.keystrokes, joypad.Keystroke{Button: btn, Pressed: pressed})
+
+			if len(i.keystrokes) > maxQueueSize {
+				i.keystrokes = i.keystrokes[1:]
+			}
+
 			i.m.Unlock()
 		}
 	}
@@ -153,6 +165,11 @@ func (i *Input) WaitForKeyEvents() ControlEvent {
 			if t.Keysym.Sym == sdl.K_F1 {
 
 				return ControlEventReset
+			}
+
+			if t.Keysym.Sym == sdl.K_F2 {
+
+				return ControlEventPause
 			}
 
 			i.AddKeyEvent(t.Keysym.Sym, true)
