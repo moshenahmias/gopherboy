@@ -39,6 +39,7 @@ func NewGameboy(
 		return nil, err
 	}
 
+	// map joypad
 	if err := mmu.Map(joyp, joypad.AddrJOYP, joypad.AddrJOYP); err != nil {
 		return nil, err
 	}

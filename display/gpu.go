@@ -412,7 +412,7 @@ func (g *GPU) ClockChanged(cycles int) error {
 			return nil
 		}
 
-		g.cyclesCounter = 0
+		g.cyclesCounter = g.cyclesCounter - 80
 
 		for x := 0; x < ScreenWidth; x++ {
 			g.spriteLayer[SpriteAboveBackground][x][g.ly] = ColorTransparent
@@ -480,7 +480,7 @@ func (g *GPU) ClockChanged(cycles int) error {
 			return nil
 		}
 
-		g.cyclesCounter = 0
+		g.cyclesCounter = g.cyclesCounter - 204
 
 		if g.ly == 144 {
 
@@ -533,7 +533,7 @@ func (g *GPU) ClockChanged(cycles int) error {
 			return nil
 		}
 
-		g.cyclesCounter = 0
+		g.cyclesCounter = g.cyclesCounter - 456
 
 		g.ly++
 

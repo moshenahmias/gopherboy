@@ -99,7 +99,7 @@ func (m *MBC3) ClockChanged(cycles int) error {
 
 	if m.cyclesCounter >= cpu.Frequency {
 
-		m.cyclesCounter = 0
+		m.cyclesCounter = m.cyclesCounter - cpu.Frequency
 
 		if !m.halt() {
 

@@ -132,7 +132,7 @@ func (t *Timer) ClockChanged(cycles int) error {
 	t.divCounter += cycles
 
 	if t.divCounter >= DividerRate {
-		t.divCounter = 0
+		t.divCounter = t.divCounter - DividerRate
 		t.div++
 	}
 
@@ -144,7 +144,7 @@ func (t *Timer) ClockChanged(cycles int) error {
 
 		if t.timaCounter >= timaRate {
 
-			t.timaCounter = 0
+			t.timaCounter = t.timaCounter - timaRate
 			t.tima++
 
 			if t.tima == 0 {
