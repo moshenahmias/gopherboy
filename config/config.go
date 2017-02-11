@@ -32,12 +32,13 @@ var DefaultSettings = Settings{
 		32:         EJoypad_JoypadSelect,
 		13:         EJoypad_JoypadStart},
 
-	Fps:     60,
-	Scale:   2,
-	Color_0: 0x00C3D6AA,
-	Color_1: 0x008EA86C,
-	Color_2: 0x004D642D,
-	Color_3: 0x00283A10}
+	SoundDevice: 0,
+	Fps:         60,
+	Scale:       2,
+	Color_0:     0x00C3D6AA,
+	Color_1:     0x008EA86C,
+	Color_2:     0x004D642D,
+	Color_3:     0x00283A10}
 
 // createDefaultSettingsFile in the given path
 func createDefaultSettingsFile(path string) error {

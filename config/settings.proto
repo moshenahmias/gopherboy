@@ -3,7 +3,7 @@
 *
 * PACKAGE :			config
 *
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
+* AUTHOR :    Moshe Nahmias       LAST CHANGE :    11 Fab 2017
 *
 *H*/
 
@@ -26,11 +26,13 @@ message Settings {
 
 	map<int32, eJoypad> joypad_mapping = 1;
 
-    uint32 fps                         = 2;
-    uint32 scale                       = 3;
+    int32 sound_device                 = 2;
 
-    uint32 color_0                     = 4;
-    uint32 color_1                     = 5;
-    uint32 color_2                     = 6;
-    uint32 color_3  	               = 7;
+    uint32 fps                         = 3;
+    uint32 scale                       = 4;
+
+    uint32 color_0                     = 5;
+    uint32 color_1                     = 6;
+    uint32 color_2                     = 7;
+    uint32 color_3  	               = 8;
 }

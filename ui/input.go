@@ -38,6 +38,9 @@ const ControlEventReset ControlEvent = 1
 // ControlEventPause signals a pause request
 const ControlEventPause ControlEvent = 2
 
+// ControlEventMute signals a mute request
+const ControlEventMute ControlEvent = 3
+
 // Input is a Keystroker implementer
 type Input struct {
 	keystrokes []joypad.Keystroke
@@ -170,6 +173,11 @@ func (i *Input) WaitForKeyEvents() ControlEvent {
 			if t.Keysym.Sym == sdl.K_F2 {
 
 				return ControlEventPause
+			}
+
+			if t.Keysym.Sym == sdl.K_F3 {
+
+				return ControlEventMute
 			}
 
 			i.AddKeyEvent(t.Keysym.Sym, true)

@@ -3,11 +3,13 @@ A Nintendo Game Boy emulator written in golang.
 
 Passes blargg's cpu_instrs.gb test.
 
+tested none-MBC, MBC1, MBC2 and MBC3 roms.
+
 ### TODO
 
-1. Sound.
-2. Save / Load game state.
-3. Serial Link.
+1. Save / Load game state.
+2. Serial Link.
+3. Fix the sound emulation (sounds like crap, especially the noise channel)
 
 ### Dependencies
 
@@ -50,6 +52,7 @@ Usage of gopherboy:
 | Start         | Enter         | 
 | Reset         | F1            | 
 | Pause         | F2            | 
+| Un/Mute Sound | F3            | 
 | Exit          | ESC           | 
 
 ### Settings
@@ -70,7 +73,7 @@ SDL keycodes: https://wiki.libsdl.org/SDLKeycodeLookup
 
 ##### Other settings:
 
-FPS rate, screen size and color palette.
+Sound output device, FPS rate, screen size and color palette.
 
 ### Screenshots
 

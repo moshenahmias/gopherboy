@@ -15,6 +15,7 @@ import (
 	"runtime"
 	"sync"
 
+	"github.com/moshenahmias/gopherboy/audio"
 	"github.com/moshenahmias/gopherboy/config"
 	"github.com/moshenahmias/gopherboy/cpu"
 	"github.com/moshenahmias/gopherboy/display"
@@ -88,6 +89,17 @@ func run(romFile, biosFile string, settings *config.Settings) error {
 
 	defer window.Close()
 
+	var sound ui.Sound
+
+	if settings.SoundDevice >= 0 {
+
+		if err := sound.Initialize(int(settings.SoundDevice)); err != nil {
+			return err
+		}
+
+		defer sound.Close()
+	}
+
 	// load bios (if available)
 	var biosData []byte
 
@@ -103,7 +115,13 @@ func run(romFile, biosFile string, settings *config.Settings) error {
 		}
 	}
 
+	soundMute := false
+
+	// restart loop
 	for quit := false; !quit; {
+
+		// set sound mute state
+		sound.Mute(soundMute)
 
 		// create mmu
 		mmu := memory.NewMMU()
@@ -125,6 +143,13 @@ func run(romFile, biosFile string, settings *config.Settings) error {
 
 		// create gpu
 		gpu, err := display.NewGPU(mmu, window, core, settings.Fps)
+
+		if err != nil {
+			return err
+		}
+
+		// create apu
+		_, err = audio.NewAPU(core, mmu, &sound)
 
 		if err != nil {
 			return err
@@ -161,10 +186,19 @@ func run(romFile, biosFile string, settings *config.Settings) error {
 		// wait for keyboard events
 		keyEvent := input.WaitForKeyEvents()
 
-		for keyEvent == ui.ControlEventPause {
+		for keyEvent == ui.ControlEventPause || keyEvent == ui.ControlEventMute {
 
 			// pause
-			gameboy.Pause()
+			if keyEvent == ui.ControlEventPause {
+				gameboy.Pause()
+			}
+
+			// mute
+			if keyEvent == ui.ControlEventMute {
+				soundMute = !soundMute
+				sound.Mute(soundMute)
+			}
+
 			keyEvent = input.WaitForKeyEvents()
 		}
 
