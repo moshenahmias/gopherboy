@@ -9,7 +9,7 @@ tested none-MBC, MBC1, MBC2 and MBC3 roms.
 
 1. Save / Load game state.
 2. Serial Link.
-3. Fix the sound emulation (sounds like crap, especially the noise channel)
+3. Fix the sound emulation.
 
 ### Dependencies
 
@@ -22,6 +22,20 @@ tested none-MBC, MBC1, MBC2 and MBC3 roms.
 1. Follow the instructions for go-sdl2, logrus and protobuf in the links above.
 2. go get github.com/moshenahmias/gopherboy
 3. go install github.com/moshenahmias/gopherboy
+
+It is possible that you'll need to add the following code to github.com\veandco\go-sdl2\sdl\audio.go (if not already there):
+
+```
+// GetQueuedAudioSize (https://wiki.libsdl.org/SDL_GetQueuedAudioSize)
+func GetQueuedAudioSize(dev AudioDeviceID) uint32 {
+	return (uint32)(C.SDL_GetQueuedAudioSize(dev.c()))
+}
+
+// ClearQueuedAudio (https://wiki.libsdl.org/SDL_ClearQueuedAudio)
+func ClearQueuedAudio(dev AudioDeviceID) {
+	C.SDL_ClearQueuedAudio(dev.c())
+}
+```
 
 ### How to run
 

@@ -3,7 +3,7 @@
 *
 * PACKAGE :			audio
 *
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    10 Fab 2017
+* AUTHOR :    Moshe Nahmias       LAST CHANGE :    16 Fab 2017
 *
 *H*/
 
@@ -26,6 +26,7 @@ type Audioer interface {
 	Queue(samples []byte) error
 	Frequency() int
 	BufferSize() uint16
+	SamplesCount() uint32
 }
 
 // APU emulates the device sound chip
@@ -38,7 +39,7 @@ type APU struct {
 	control        Control
 	audioer        Audioer
 	samplesCounter int
-	samples        []byte
+	throttle       int
 }
 
 // NewAPU creates APU instance
@@ -116,13 +117,23 @@ func (a *APU) ClockChanged(cycles int) error {
 
 	a.samplesCounter += cycles
 
-	freq := (cpu.Frequency / a.audioer.Frequency()) - 7 // -7 == magic, manaual sync, todo
+	sc := a.audioer.SamplesCount()
+	bs := a.audioer.BufferSize()
 
-	if a.samplesCounter >= freq {
+	if sc < uint32((3*bs)/4) && a.throttle > -10 {
+		a.throttle--
+	} else if sc == uint32(bs) && a.throttle < -5 {
+		a.throttle++
+	}
+
+	freq := (cpu.Frequency / a.audioer.Frequency()) + a.throttle
+
+	for a.samplesCounter >= freq {
 
 		a.samplesCounter = a.samplesCounter - freq
 
-		var mixedSample byte
+		var sampleLeft byte
+		var sampleRight byte
 
 		if a.control.soundOn() {
 
@@ -170,25 +181,15 @@ func (a *APU) ClockChanged(cycles int) error {
 				sampleRightCh4 = a.ch4.output()
 			}
 
-			sampleLeft := sampleLeftCh1 + sampleLeftCh2 + sampleLeftCh3 + sampleLeftCh4
-			sampleRight := sampleRightCh1 + sampleRightCh2 + sampleRightCh3 + sampleRightCh4
+			sampleLeft = sampleLeftCh1 + sampleLeftCh2 + sampleLeftCh3 + sampleLeftCh4
+			sampleRight = sampleRightCh1 + sampleRightCh2 + sampleRightCh3 + sampleRightCh4
 
 			sampleLeft += a.control.leftVolume()
 			sampleRight += a.control.rightVolume()
-
-			mixedSample = sampleLeft + sampleRight
-
 		}
 
-		a.samples = append(a.samples, mixedSample)
-
-		if len(a.samples) == int(a.audioer.BufferSize()) {
-
-			if err := a.audioer.Queue(a.samples); err != nil {
-				return err
-			}
-
-			a.samples = nil
+		if err := a.audioer.Queue([]byte{sampleLeft, sampleRight}); err != nil {
+			return err
 		}
 	}
 

@@ -3,7 +3,7 @@
 *
 * PACKAGE :			cpu
 *
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
+* AUTHOR :    Moshe Nahmias       LAST CHANGE :    16 Fab 2017
 *
 *H*/
 
@@ -61,6 +61,8 @@ type Core struct {
 	stop       bool          // bool flag
 	timedUnits []TimedUnit   // clocked units
 
+	throttle int
+
 	pause bool
 }
 
@@ -68,6 +70,8 @@ type Core struct {
 func NewCore(mmu *memory.MMU) (*Core, error) {
 
 	c := Core{mmu: mmu}
+
+	c.throttle = 5500
 
 	c.a = c.af.high()
 	c.f = c.af.low()
@@ -97,6 +101,16 @@ func (c *Core) RegisterToClockChanges(unit TimedUnit) {
 	c.timedUnits = append(c.timedUnits, unit)
 }
 
+// Throttle the cpu speed
+func (c *Core) Throttle(tooFast bool) {
+
+	if tooFast {
+		c.throttle += 10
+	} else {
+		c.throttle -= 10
+	}
+}
+
 // Start the cpu activity at address 'pc'
 func (c *Core) Start(pc uint16) error {
 
@@ -124,6 +138,10 @@ func (c *Core) Start(pc uint16) error {
 
 		if err != nil {
 			return c.wrapErrorf(err, "%s %02x failed", name, opcode)
+		}
+
+		for i := 0; i < c.throttle; i++ {
+			// do absolutely nothing
 		}
 
 		c.pc.increment()

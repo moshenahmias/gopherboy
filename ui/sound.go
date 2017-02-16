@@ -3,7 +3,7 @@
 *
 * PACKAGE :			ui
 *
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
+* AUTHOR :    Moshe Nahmias       LAST CHANGE :    16 Fab 2017
 *
 *H*/
 
@@ -34,18 +34,34 @@ func (s *Sound) Queue(samples []byte) error {
 
 // Mute or unmute the sound
 func (s *Sound) Mute(mute bool) {
+
 	s.mute = mute
+
+	if mute {
+
+		sdl.ClearQueuedAudio(s.dev)
+		sdl.PauseAudioDevice(s.dev, true)
+
+	} else {
+
+		sdl.PauseAudioDevice(s.dev, false)
+	}
 }
 
 // Frequency of sound (samples/sec)
 func (s *Sound) Frequency() int {
-	return 48000
+	return 44100
+}
+
+// SamplesCount return the current number of samples in buffer
+func (s *Sound) SamplesCount() uint32 {
+	return sdl.GetQueuedAudioSize(s.dev)
 }
 
 // BufferSize is the size of the samples
 // buffer
 func (s *Sound) BufferSize() uint16 {
-	return 1024
+	return 512
 }
 
 // Close the sound
@@ -68,7 +84,7 @@ func (s *Sound) Initialize(dev int) error {
 	spec := sdl.AudioSpec{
 		Freq:     int32(s.Frequency()),
 		Format:   sdl.AUDIO_U8,
-		Channels: 1,
+		Channels: 2,
 		Samples:  s.BufferSize(),
 		Callback: nil}
 

@@ -3,7 +3,7 @@
 *
 * PACKAGE :			display
 *
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
+* AUTHOR :    Moshe Nahmias       LAST CHANGE :    16 Fab 2017
 *
 *H*/
 
@@ -97,8 +97,9 @@ type GPU struct {
 	ignoreLYCInt    bool
 	ignoreOAMInt    bool
 
-	frameDuration time.Time
-	fps           int64
+	t1       time.Time
+	fps      int64
+	fpsCount int64
 }
 
 // NewGPU creates GPU instance
@@ -314,7 +315,7 @@ func (g *GPU) renderPixel(x, y byte) error {
 // initialize the GPU
 func (g *GPU) initialize() {
 
-	g.frameDuration = time.Now()
+	g.t1 = time.Now()
 	g.ly = 0
 	g.lx = 0
 	g.cyclesCounter = 0
@@ -763,16 +764,24 @@ func (g *GPU) createFrame() *Frame {
 // updateMonitor with the bg, window and sprites rendered layers
 func (g *GPU) updateMonitor() error {
 
-	timeSinceLastFrame := time.Since(g.frameDuration).Nanoseconds()
-	realTime := time.Second.Nanoseconds() / g.fps
-
-	if timeSinceLastFrame < realTime {
-		time.Sleep(time.Duration(realTime - timeSinceLastFrame))
-	}
-
 	err := g.monitor.DrawFrame(g.createFrame())
 
-	g.frameDuration = time.Now()
+	g.fpsCount++
+
+	if g.fpsCount == g.fps {
+
+		g.fpsCount = 0
+
+		t2 := time.Since(g.t1)
+
+		if t2.Nanoseconds() > time.Second.Nanoseconds() {
+			g.core.Throttle(false)
+		} else if t2.Nanoseconds() < time.Second.Nanoseconds() {
+			g.core.Throttle(true)
+		}
+
+		g.t1 = time.Now()
+	}
 
 	return err
 }
