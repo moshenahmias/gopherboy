@@ -3,7 +3,7 @@
 *
 * PACKAGE :			audio
 *
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    10 Fab 2017
+* AUTHOR :    Moshe Nahmias       LAST CHANGE :    10 Feb 2017
 *
 *H*/
 

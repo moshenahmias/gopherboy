@@ -3,7 +3,7 @@
 *
 * PACKAGE :			audio
 *
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    10 Fab 2017
+* AUTHOR :    Moshe Nahmias       LAST CHANGE :    10 Feb 2017
 *
 *H*/
 
@@ -146,7 +146,7 @@ func (s *Square1) initialize() {
 }
 
 func (s *Square1) enabled() bool {
-	return s.lengthLoad() > 0 && s.freqShadow < 2048  && s.dac()
+	return s.lengthLoad() > 0 && s.freqShadow < 2048 && s.dac()
 }
 
 func (s *Square1) sweepClock() {

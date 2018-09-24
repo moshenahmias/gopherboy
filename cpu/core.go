@@ -3,7 +3,7 @@
 *
 * PACKAGE :			cpu
 *
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    16 Fab 2017
+* AUTHOR :    Moshe Nahmias       LAST CHANGE :    16 Feb 2017
 *
 *H*/
 
