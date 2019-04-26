@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        memreg.go
-*
-* PACKAGE :			memory
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
-*
-*H*/
-
 package memory
 
 // MemReg is a memory register

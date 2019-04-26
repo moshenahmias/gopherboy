@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        config.go
-*
-* PACKAGE :			config
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
-*
-*H*/
-
 package config
 
 import (

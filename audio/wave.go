@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        wave.go
-*
-* PACKAGE :			audio
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    11 Feb 2017
-*
-*H*/
-
 package audio
 
 import "github.com/moshenahmias/gopherboy/memory"

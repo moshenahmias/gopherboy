@@ -11,18 +11,6 @@ tested none-MBC, MBC1, MBC2 and MBC3 roms.
 2. Serial Link.
 3. Fix the sound emulation.
 
-### Dependencies
-
-1. go-sdl2: https://github.com/veandco/go-sdl2
-2. logrus: https://github.com/sirupsen/logrus
-3. protobuf: https://github.com/golang/protobuf
-
-### How to build
-
-1. Follow the instructions for go-sdl2, logrus and protobuf in the links above.
-2. go get github.com/moshenahmias/gopherboy
-3. go install github.com/moshenahmias/gopherboy
-
 It is possible that you'll need to add the following code to github.com\veandco\go-sdl2\sdl\audio.go (if not already there):
 
 ```

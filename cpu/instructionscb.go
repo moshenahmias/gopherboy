@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        instructionscb.go
-*
-* PACKAGE :			cpu
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
-*
-*H*/
-
 package cpu
 
 // InitInstructionsCB 00 - FF

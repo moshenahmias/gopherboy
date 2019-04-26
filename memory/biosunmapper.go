@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        biosunmapper.go
-*
-* PACKAGE :			memory
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
-*
-*H*/
-
 package memory
 
 // BiosUnmapper memory unit is used to unmap the 256B bios from

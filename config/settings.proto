@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        settings.proto
-*
-* PACKAGE :			config
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    11 Feb 2017
-*
-*H*/
-
 syntax = "proto3";
 package config;
 

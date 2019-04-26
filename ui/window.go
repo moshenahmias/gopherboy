@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        window.go
-*
-* PACKAGE :			ui
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
-*
-*H*/
-
 package ui
 
 import (

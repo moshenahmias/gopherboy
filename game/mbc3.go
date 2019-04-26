@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        mbc3.go
-*
-* PACKAGE :			game
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
-*
-*H*/
-
 package game
 
 import "github.com/moshenahmias/gopherboy/memory"

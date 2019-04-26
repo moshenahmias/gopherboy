@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        core.go
-*
-* PACKAGE :			cpu
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    16 Feb 2017
-*
-*H*/
-
 package cpu
 
 import (

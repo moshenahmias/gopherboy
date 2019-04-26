@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        joyp.go
-*
-* PACKAGE :			joypad
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
-*
-*H*/
-
 package joypad
 
 import "github.com/moshenahmias/gopherboy/cpu"

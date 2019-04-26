@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        register8.go
-*
-* PACKAGE :			cpu
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
-*
-*H*/
-
 package cpu
 
 // Register8 is a 8bit register

@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        timers.go
-*
-* PACKAGE :			timers
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
-*
-*H*/
-
 package timers
 
 import (

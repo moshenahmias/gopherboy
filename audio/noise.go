@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        noise.go
-*
-* PACKAGE :			audio
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    10 Feb 2017
-*
-*H*/
-
 package audio
 
 import (

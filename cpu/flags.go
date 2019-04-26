@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        flags.go
-*
-* PACKAGE :			cpu
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
-*
-*H*/
-
 package cpu
 
 // zeroFlag returns the zero flag state

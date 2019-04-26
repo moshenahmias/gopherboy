@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        gpu.go
-*
-* PACKAGE :			display
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    16 Feb 2017
-*
-*H*/
-
 package display
 
 import (

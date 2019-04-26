@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        cartridge.go
-*
-* PACKAGE :			game
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
-*
-*H*/
-
 package game
 
 import (

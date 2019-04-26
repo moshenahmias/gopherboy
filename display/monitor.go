@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        monitor.go
-*
-* PACKAGE :			display
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
-*
-*H*/
-
 package display
 
 // Pixel represents a single pixel color in the monitor

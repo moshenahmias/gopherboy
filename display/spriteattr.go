@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        spriteattr.go
-*
-* PACKAGE :			display
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
-*
-*H*/
-
 package display
 
 // SpriteAboveBackground priority

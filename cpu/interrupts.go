@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        interrupts.go
-*
-* PACKAGE :			cpu
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
-*
-*H*/
-
 package cpu
 
 import "github.com/moshenahmias/gopherboy/memory"

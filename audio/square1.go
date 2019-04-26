@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        square1.go
-*
-* PACKAGE :			audio
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    10 Feb 2017
-*
-*H*/
-
 package audio
 
 import "github.com/moshenahmias/gopherboy/memory"

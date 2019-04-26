@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        romemreg.go
-*
-* PACKAGE :			memory
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
-*
-*H*/
-
 package memory
 
 // ROMemReg is a read only memory register

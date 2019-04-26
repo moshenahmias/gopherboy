@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        stat.go
-*
-* PACKAGE :			display
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
-*
-*H*/
-
 package display
 
 // ModeDuringHBlank - The LCD controller is in the H-Blank period and

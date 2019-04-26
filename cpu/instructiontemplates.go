@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        instructiontemplates.go
-*
-* PACKAGE :			cpu
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
-*
-*H*/
-
 package cpu
 
 // insSetNr sets bit N in the register

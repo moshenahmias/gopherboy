@@ -1,12 +1,3 @@
-/*H**********************************************************************
-* FILENAME :        lcdc.go
-*
-* PACKAGE :			display
-*
-* AUTHOR :    Moshe Nahmias       LAST CHANGE :    04 Jan 2017
-*
-*H*/
-
 package display
 
 // LCDC is the LCD Control register
